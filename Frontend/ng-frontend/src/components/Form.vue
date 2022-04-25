@@ -17,7 +17,8 @@
 
       <v-card>
         <v-card-title
- class="text-h5 primary justify-center">
+        color="primary"
+        class="text-h5 justify-center">
           נוהל מתח      
         </v-card-title>
 
@@ -28,9 +29,12 @@
         @submit.prevent="submit"
     >
      <v-container fluid>
+          
+<v-row justify="center"
+        >
           <v-col
             cols="12"
-            sm="7"
+            sm="3"
           >
         <v-switch
         v-model="isTerminating"
@@ -39,6 +43,7 @@
         required
         ></v-switch>
           </v-col>
+</v-row>
 
         <v-row justify="center"
         >
