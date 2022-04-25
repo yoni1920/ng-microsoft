@@ -109,9 +109,6 @@
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
               <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-              <v-btn icon>
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </v-toolbar>
@@ -122,7 +119,7 @@
                     :key="field"
                 >
                     <v-list-item-title>{{ `${field}: ${value}` }}</v-list-item-title>
-                    </v-list-item>
+                </v-list-item>
                 </v-list>
             </v-card-text>
             <v-card-actions>
@@ -143,6 +140,9 @@
 
 <script>
   import activitiesExample from '../data/activitiesExample.json'
+  import colorStatus from './StatusMapping.js'
+  console.log(colorStatus)
+
   export default {
     data: () => ({
       focus: '',
@@ -156,9 +156,7 @@
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      events: [],
-    //   colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-      names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
+      events: []
     }),
     mounted () {
       this.$refs.calendar.checkChange()
@@ -199,6 +197,8 @@
       updateRange () {
         const events = []
         activitiesExample.forEach(element => {
+            const color = colorStatus.get(element.status) ?? 'grey';
+
           events.push({
             name: element.name,
             start: new Date(element.startDate),
@@ -206,17 +206,17 @@
             status: element.status,
             timed: true,
             operationalImpact: element.operationalImpact,
-            clientsImpact: element.clientsImpact
+            clientsImpact: element.clientsImpact,
+            color,
+            steps: element.steps,
+            systemId: element.systemId
           })
         });
         console.log(events)
 
 
         this.events = events
-      },
-      rnd (a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
-      },
+      }
     },
   }
 </script>
