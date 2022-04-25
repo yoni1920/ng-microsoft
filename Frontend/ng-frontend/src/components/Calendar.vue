@@ -86,6 +86,8 @@
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
+          @mousedown:time="setSelectedStartTime"
+          @mouseup:time="openZibi"
           @change="updateRange"
         ></v-calendar>
         <v-menu
@@ -153,11 +155,13 @@
         '4day': '4 Days',
         month: 'Month',
       },
+      selectedStartTime: {},
+      selectedEndTime: {},
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
       events: [],
-    //   colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
+      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
       names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
     }),
     mounted () {
@@ -174,6 +178,13 @@
       setToday () {
         this.focus = ''
       },
+      setSelectedStartTime (event) {
+        this.selectedStartTime = new Date(`${event.date}T${event.time}`)
+      },
+      openZibi (event) {
+        this.selectedEndTime = new Date(`${event.date}T${event.time}`);
+        
+        },
       prev () {
         this.$refs.calendar.prev()
       },
@@ -204,6 +215,7 @@
             start: new Date(element.startDate),
             end: new Date(element.endDate),
             status: element.status,
+            color:"red",  
             timed: true,
             operationalImpact: element.operationalImpact,
             clientsImpact: element.clientsImpact
