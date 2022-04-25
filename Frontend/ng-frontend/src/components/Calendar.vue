@@ -112,14 +112,15 @@
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </v-toolbar>
-            <v-card-text>
-              <v-list>
-                <v-list-item
-                    v-for="(value, field) in selectedEvent"
-                    :key="field"
-                >
-                    <v-list-item-title>{{ `${field}: ${value}` }}</v-list-item-title>
-                </v-list-item>
+            <v-card-text class="font-weight-light text-h5">
+                <v-list>
+                    <v-list-item
+                        v-for="(value, field) in operEventData"
+                        :key="field"
+                    >
+                        <v-list-item-title>{{ `${field}: ${value}` }}</v-list-item-title>
+                    </v-list-item>
+                   
                 </v-list>
             </v-card-text>
             <v-card-actions>
@@ -141,7 +142,6 @@
 <script>
   import activitiesExample from '../data/activitiesExample.json'
   import colorStatus from './StatusMapping.js'
-  console.log(colorStatus)
 
   export default {
     data: () => ({
@@ -197,9 +197,9 @@
       updateRange () {
         const events = []
         activitiesExample.forEach(element => {
-            const color = colorStatus.get(element.status) ?? 'grey';
+        const color = colorStatus.get(element.status) ?? 'grey';
 
-          events.push({
+        events.push({
             name: element.name,
             start: new Date(element.startDate),
             end: new Date(element.endDate),
@@ -218,5 +218,30 @@
         this.events = events
       }
     },
+    computed: {
+        operEventData() {
+            let startDate = this.selectedEvent.start;
+
+            if (startDate) {
+                startDate = startDate.toLocaleDateString('en-us', { hour: "numeric", minute: "numeric", weekday:"short", year:"numeric", month:"short", day:"numeric"})
+            }
+
+            let endDate = this.selectedEvent.end;
+
+            if (endDate) {
+                endDate = endDate.toLocaleDateString('en-us', { hour: "numeric", minute: "numeric", weekday:"short", year:"numeric", month:"short", day:"numeric"})
+            }
+
+            return {
+                    'Activity': this.selectedEvent.name,
+                    'System': this.selectedEvent.systemId,
+                    'Status': this.selectedEvent.status,
+                    "Start Time": startDate,
+                    'Ending Time': endDate,
+                    'Operational Impact': this.selectedEvent.operationalImpact,
+                    'Client Impact': this.selectedEvent.clientsImpact
+            }
+        }
+    }
   }
 </script>
