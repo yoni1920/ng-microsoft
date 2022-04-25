@@ -13,11 +13,6 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/CalendarPage.vue"),
   },
-  {
-    path: "/form",
-    name: "Form",
-    component: () => import("../views/FormPage.vue"),
-  },
 ];
 
 const router = new VueRouter({

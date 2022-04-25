@@ -2,58 +2,25 @@
   <v-row class="fill-height">
     <v-col>
       <v-sheet height="64">
-        <v-toolbar
-          flat
-        >
-          <v-btn
-            outlined
-            class="mr-4"
-            color="grey darken-2"
-            @click="setToday"
-          >
+        <v-toolbar flat>
+          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
             Today
           </v-btn>
-          <v-btn
-            fab
-            text
-            small
-            color="grey darken-2"
-            @click="prev"
-          >
-            <v-icon small>
-              mdi-chevron-left
-            </v-icon>
+          <v-btn fab text small color="grey darken-2" @click="prev">
+            <v-icon small> mdi-chevron-left </v-icon>
           </v-btn>
-          <v-btn
-            fab
-            text
-            small
-            color="grey darken-2"
-            @click="next"
-          >
-            <v-icon small>
-              mdi-chevron-right
-            </v-icon>
+          <v-btn fab text small color="grey darken-2" @click="next">
+            <v-icon small> mdi-chevron-right </v-icon>
           </v-btn>
           <v-toolbar-title v-if="$refs.calendar">
             {{ $refs.calendar.title }}
           </v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-menu
-            bottom
-            right
-          >
+          <v-menu bottom right>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                outlined
-                color="grey darken-2"
-                v-bind="attrs"
-                v-on="on"
-              >
+              <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
                 <span>{{ typeToLabel[type] }}</span>
-                <v-icon right>
-                  mdi-menu-down
-                </v-icon>
+                <v-icon right> mdi-menu-down </v-icon>
               </v-btn>
             </template>
             <v-list>
@@ -96,15 +63,8 @@
           :activator="selectedElement"
           transition="scale-transition"
         >
-          <v-card
-            color="grey lighten-4"
-            min-width="350px"
-            flat
-          >
-            <v-toolbar
-              :color="selectedEvent.color"
-              dark
-            >
+          <v-card color="grey lighten-4" min-width="350px" flat>
+            <v-toolbar :color="selectedEvent.color" dark>
               <v-btn icon>
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
@@ -120,19 +80,17 @@
             <v-card-text>
               <v-list>
                 <v-list-item
-                    v-for="(value, field) in selectedEvent"
-                    :key="field"
+                  v-for="(value, field) in selectedEvent"
+                  :key="field"
                 >
-                    <v-list-item-title>{{ `${field}: ${value}` }}</v-list-item-title>
-                    </v-list-item>
-                </v-list>
+                  <v-list-item-title>{{
+                    `${field}: ${value}`
+                  }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
             </v-card-text>
             <v-card-actions>
-              <v-btn
-                text
-                color="secondary"
-                @click="selectedOpen = false"
-              >
+              <v-btn text color="secondary" @click="selectedOpen = false">
                 Cancel
               </v-btn>
             </v-card-actions>
@@ -140,95 +98,123 @@
         </v-menu>
       </v-sheet>
     </v-col>
+    <Form :dialog="this.shouldDisplayForm" @closeModal="setShouldDisplayForm" />
   </v-row>
 </template>
 
 <script>
-  import activitiesExample from '../data/activitiesExample.json'
-  export default {
-    data: () => ({
-      focus: '',
-      type: 'week',
-      typeToLabel: {
-        week: 'Week',
-        day: 'Day',
-        '4day': '4 Days',
-        month: 'Month',
-      },
-      selectedStartTime: {},
-      selectedEndTime: {},
-      selectedEvent: {},
-      selectedElement: null,
-      selectedOpen: false,
-      events: [],
-      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-      names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
-    }),
-    mounted () {
-      this.$refs.calendar.checkChange()
+import activitiesExample from "../data/activitiesExample.json";
+import Form from "@/components/Form.vue";
+
+export default {
+  name: "Calendar",
+  components: {
+    Form,
+  },
+  data: () => ({
+    focus: "",
+    type: "week",
+    typeToLabel: {
+      week: "Week",
+      day: "Day",
+      "4day": "4 Days",
+      month: "Month",
     },
-    methods: {
-      viewDay ({ date }) {
-        this.focus = date
-        this.type = 'day'
-      },
-      getEventColor (event) {
-        return event.color
-      },
-      setToday () {
-        this.focus = ''
-      },
-      setSelectedStartTime (event) {
-        this.selectedStartTime = new Date(`${event.date}T${event.time}`)
-      },
-      openZibi (event) {
-        this.selectedEndTime = new Date(`${event.date}T${event.time}`);
+    selectedStartTime: {},
+    selectedEndTime: {},
+    shouldDisplayForm: false,
+    selectedEvent: {},
+    selectedElement: null,
+    selectedOpen: false,
+    events: [],
+    colors: [
+      "blue",
+      "indigo",
+      "deep-purple",
+      "cyan",
+      "green",
+      "orange",
+      "grey darken-1",
+    ],
+    names: [
+      "Meeting",
+      "Holiday",
+      "PTO",
+      "Travel",
+      "Event",
+      "Birthday",
+      "Conference",
+      "Party",
+    ],
+  }),
+  mounted() {
+    this.$refs.calendar.checkChange();
+  },
+  methods: {
+    viewDay({ date }) {
+      this.focus = date;
+      this.type = "day";
+    },
+    getEventColor(event) {
+      return event.color;
+    },
+    setToday() {
+      this.focus = "";
+    },
+    setSelectedStartTime(event) {
+      this.selectedStartTime = new Date(`${event.date}T${event.time}`);
+    },
+    openZibi(event) {
+      this.selectedEndTime = new Date(`${event.date}T${event.time}`);
+      this.shouldDisplayForm = true;
+    },
+    setShouldDisplayForm(value) {
+      this.shouldDisplayForm = value;
+    },
+    prev() {
+      this.$refs.calendar.prev();
+    },
+    next() {
+      this.$refs.calendar.next();
+    },
+    showEvent({ nativeEvent, event }) {
+      const open = () => {
+        this.selectedEvent = event;
+        this.selectedElement = nativeEvent.target;
         
-        },
-      prev () {
-        this.$refs.calendar.prev()
-      },
-      next () {
-        this.$refs.calendar.next()
-      },
-      showEvent ({ nativeEvent, event }) {
-        const open = () => {
-          this.selectedEvent = event
-          this.selectedElement = nativeEvent.target
-          requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
-        }
+        
+      };
 
-        if (this.selectedOpen) {
-          this.selectedOpen = false
-          requestAnimationFrame(() => requestAnimationFrame(() => open()))
-        } else {
-          open()
-        }
+      if (this.selectedOpen) {
+        this.selectedOpen = false;
+        requestAnimationFrame(() => requestAnimationFrame(() => open()));
+      } else {
+        open();
+      }
 
-        nativeEvent.stopPropagation()
-      },
-      updateRange () {
-        const events = []
-        activitiesExample.forEach(element => {
-          events.push({
-            name: element.name,
-            start: new Date(element.startDate),
-            end: new Date(element.endDate),
-            status: element.status,
-            color:"red",  
-            timed: true,
-            operationalImpact: element.operationalImpact,
-            clientsImpact: element.clientsImpact
-          })
-        });
-        console.log(events)
-
-
-        this.events = events
-      },
-      rnd (a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
-      },
+      nativeEvent.stopPropagation();
     },
-  }
+    updateRange() {
+      const events = [];
+      activitiesExample.forEach((element) => {
+        events.push({
+          name: element.name,
+          start: new Date(element.startDate),
+          end: new Date(element.endDate),
+          status: element.status,
+          color: "red",
+          timed: true,
+          operationalImpact: element.operationalImpact,
+          clientsImpact: element.clientsImpact,
+        });
+      });
+      console.log(events);
+
+      this.events = events;
+    },
+    rnd(a, b) {
+      return Math.floor((b - a + 1) * Math.random()) + a;
+    },
+  },
+};
 </script>
