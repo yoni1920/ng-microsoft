@@ -81,6 +81,8 @@
           :events="events"
           :event-color="getEventColor"
           :type="type"
+          first-time="06:00"
+          interval-count="18"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
@@ -196,6 +198,8 @@
             end: new Date(element.endDate),
             color: this.colors[this.rnd(0, this.colors.length - 1)],
             timed: true,
+            operationalImpact: element.operationalImpact,
+            clientsImpact: element.clientsImpact
           })
         });
         console.log(events)
