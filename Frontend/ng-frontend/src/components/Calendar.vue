@@ -71,23 +71,19 @@
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
               <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-              <v-btn icon>
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </v-toolbar>
-            <v-card-text>
-              <v-list>
-                <v-list-item
-                  v-for="(value, field) in selectedEvent"
-                  :key="field"
-                >
-                  <v-list-item-title>{{
-                    `${field}: ${value}`
-                  }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
+            <v-card-text class="font-weight-light text-h5">
+                <v-list>
+                    <v-list-item
+                        v-for="(value, field) in operEventData"
+                        :key="field"
+                    >
+                        <v-list-item-title>{{ `${field}: ${value}` }}</v-list-item-title>
+                    </v-list-item>
+                   
+                </v-list>
             </v-card-text>
             <v-card-actions>
               <v-btn text color="secondary" @click="selectedOpen = false">
@@ -103,54 +99,35 @@
 </template>
 
 <script>
-import activitiesExample from "../data/activitiesExample.json";
-import Form from "@/components/Form.vue";
+  import activitiesExample from '../data/activitiesExample.json'
+  import colorStatus from './StatusMapping.js'
+  import Form from "@/components/Form.vue";
 
-export default {
-  name: "Calendar",
-  components: {
-    Form,
-  },
-  data: () => ({
-    focus: "",
-    type: "week",
-    typeToLabel: {
-      week: "Week",
-      day: "Day",
-      "4day": "4 Days",
-      month: "Month",
+  export default {
+    components: {
+        Form
     },
-    selectedStartTime: {},
-    selectedEndTime: {},
-    shouldDisplayForm: false,
-    selectedEvent: {},
-    selectedElement: null,
-    selectedOpen: false,
-    events: [],
-    colors: [
-      "blue",
-      "indigo",
-      "deep-purple",
-      "cyan",
-      "green",
-      "orange",
-      "grey darken-1",
-    ],
-    names: [
-      "Meeting",
-      "Holiday",
-      "PTO",
-      "Travel",
-      "Event",
-      "Birthday",
-      "Conference",
-      "Party",
-    ],
-  }),
-  mounted() {
-    this.$refs.calendar.checkChange();
-  },
-  methods: {
+    data: () => ({
+        focus: "",
+        type: "week",
+        typeToLabel: {
+        week: "Week",
+        day: "Day",
+        "4day": "4 Days",
+        month: "Month",
+        },
+        selectedStartTime: {},
+        selectedEndTime: {},
+        shouldDisplayForm: false,
+        selectedEvent: {},
+        selectedElement: null,
+        selectedOpen: false,
+        events: []
+    }),
+    mounted () {
+      this.$refs.calendar.checkChange()
+    },
+    methods: {
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
@@ -193,29 +170,56 @@ export default {
         open();
       }
 
-      nativeEvent.stopPropagation();
-    },
-    updateRange() {
-      const events = [];
-      activitiesExample.forEach((element) => {
+        nativeEvent.stopPropagation()
+      },
+      updateRange () {
+        const events = []
+        activitiesExample.forEach(element => {
+        const color = colorStatus.get(element.status) ?? 'grey';
+
         events.push({
-          name: element.name,
-          start: new Date(element.startDate),
-          end: new Date(element.endDate),
-          status: element.status,
-          color: "red",
-          timed: true,
-          operationalImpact: element.operationalImpact,
-          clientsImpact: element.clientsImpact,
+            name: element.name,
+            start: new Date(element.startDate),
+            end: new Date(element.endDate),
+            status: element.status,
+            timed: true,
+            operationalImpact: element.operationalImpact,
+            clientsImpact: element.clientsImpact,
+            color,
+            steps: element.steps,
+            systemId: element.systemId
+          })
         });
-      });
+
       console.log(events);
 
-      this.events = events;
+        this.events = events
+      }
     },
-    rnd(a, b) {
-      return Math.floor((b - a + 1) * Math.random()) + a;
-    },
-  },
-};
+    computed: {
+        operEventData() {
+            let startDate = this.selectedEvent.start;
+
+            if (startDate) {
+                startDate = startDate.toLocaleDateString('en-us', { hour: "numeric", minute: "numeric", weekday:"short", year:"numeric", month:"short", day:"numeric"})
+            }
+
+            let endDate = this.selectedEvent.end;
+
+            if (endDate) {
+                endDate = endDate.toLocaleDateString('en-us', { hour: "numeric", minute: "numeric", weekday:"short", year:"numeric", month:"short", day:"numeric"})
+            }
+
+            return {
+                    'Activity': this.selectedEvent.name,
+                    'System': this.selectedEvent.systemId,
+                    'Status': this.selectedEvent.status,
+                    "Start Time": startDate,
+                    'Ending Time': endDate,
+                    'Operational Impact': this.selectedEvent.operationalImpact,
+                    'Client Impact': this.selectedEvent.clientsImpact
+            }
+        }
+    }
+  }
 </script>
