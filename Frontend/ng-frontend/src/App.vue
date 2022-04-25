@@ -26,3 +26,9 @@ export default {
   }),
 };
 </script>
+
+<style>
+ *{
+  font-family: 'Assistant', sans-serif;
+}
+</style>
