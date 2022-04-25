@@ -1,16 +1,20 @@
 package ng.WaRoom.Controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import ng.WaRoom.BL.ActivitiesBL;
+import ng.WaRoom.model.Activity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/activities")
 public class ActivityController {
 
     @GetMapping
-    public @ResponseBody int getAllActivities(){
-        return 1;
+    public @ResponseBody List<Activity> getAllActivities(){
+        return ActivitiesBL.allActivities();
     }
 
     @GetMapping(value = "/{systemId}")
