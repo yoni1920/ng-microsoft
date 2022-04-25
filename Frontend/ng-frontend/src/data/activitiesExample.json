@@ -2,8 +2,8 @@
   {
     "id": "asdasdad-asdas3-32dfsdf",
     "name": "העלאת גרסא",
-    "start-date": 1650876857000,
-    "end-date": 1650876858000,
+    "startDate": 1650876857500,
+    "endDate": 1650886857800,
     "operationalImpact": "אולי תהיה השבתה ל20 דקות",
     "clientsImpact": "לא תהיה גישה דרך הapi",
     "steps": [
@@ -14,7 +14,7 @@
       },
       {
         "description": "העלאת גרסא",
-        "estimatedTime": 1650876857800,
+        "estimatedTime": 1650916857800,
         "impact": "השבתה"
       }
     ],
@@ -24,8 +24,8 @@
   {
     "id": "sdfs-jydadhgjghgh-32dfsdf",
     "name": "דילוג",
-    "start-date": 1650876857000,
-    "end-date": 1650876858000,
+    "startDate": 1651041105000,
+    "endDate": 1651081105000,
     "operationalImpact": "אולי תהיה השבתה ל20 דקות",
     "clientsImpact": "לא תהיה גישה דרך הapi",
     "steps": [
@@ -46,8 +46,8 @@
   {
     "id": "233242-asdas3-32dfsdf",
     "name": "זיבי",
-    "start-date": 1650876857000,
-    "end-date": 1650876858000,
+    "startDate": 1650956857000,
+    "endDate": 1650976858000,
     "operationalImpact": "אולי תהיה השבתה ל20 דקות",
     "clientsImpact": "לא תהיה גישה דרך הapi",
     "steps": [
@@ -58,7 +58,7 @@
       },
       {
         "description": "העלאת גרסא",
-        "estimatedTime": 1650876857800,
+        "estimatedTime": 1650898878000,
         "impact": "השבתה"
       }
     ],
