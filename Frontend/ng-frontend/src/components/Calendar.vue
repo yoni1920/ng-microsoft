@@ -92,7 +92,7 @@
           v-model="selectedOpen"
           :close-on-content-click="false"
           :activator="selectedElement"
-          offset-x
+          transition="scale-transition"
         >
           <v-card
             color="grey lighten-4"
@@ -116,7 +116,14 @@
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <span v-html="selectedEvent.details"></span>
+              <v-list>
+                <v-list-item
+                    v-for="(value, field) in selectedEvent"
+                    :key="field"
+                >
+                    <v-list-item-title>{{ `${field}: ${value}` }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -150,7 +157,7 @@
       selectedElement: null,
       selectedOpen: false,
       events: [],
-      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
+    //   colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
       names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
     }),
     mounted () {
@@ -196,7 +203,7 @@
             name: element.name,
             start: new Date(element.startDate),
             end: new Date(element.endDate),
-            color: this.colors[this.rnd(0, this.colors.length - 1)],
+            status: element.status,
             timed: true,
             operationalImpact: element.operationalImpact,
             clientsImpact: element.clientsImpact
