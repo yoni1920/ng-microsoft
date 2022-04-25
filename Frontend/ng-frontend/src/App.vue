@@ -5,7 +5,9 @@
       color="primary"
       dark
     >
-    hapoel
+      <v-layout class="align-center justify-center">
+        <div class="text-h3 font-weight-light">WARooM</div>
+      </v-layout>
     </v-app-bar>
 
     <v-main>
